@@ -13,5 +13,78 @@
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    
+
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/io.grpc/grpc-protobuf -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-protobuf</artifactId>
+            <version>1.54.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.grpc/grpc-stub -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-stub</artifactId>
+            <version>1.54.0</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.grpc/grpc-netty -->
+        <dependency>
+            <groupId>io.grpc</groupId>
+            <artifactId>grpc-netty</artifactId>
+            <version>1.54.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.google.protobuf</groupId>
+            <artifactId>protobuf-java</artifactId>
+            <version>3.16.3</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.5.0.Final</version>
+            </extension>
+        </extensions>
+        <plugins>
+            <plugin>
+                <groupId>org.xolstice.maven.plugins</groupId>
+                <artifactId>protobuf-maven-plugin</artifactId>
+                <version>0.5.1</version>
+                <configuration>
+                    <!--工具版本-->
+                    <protocArtifact>com.google.protobuf:protoc:3.5.1-1:exe:${os.detected.classifier}</protocArtifact>
+                    <!--指定protoc的插件Id-->
+                    <pluginId>grpc-java</pluginId>
+                    <pluginArtifact>io.grpc:protoc-gen-grpc-java:1.14.0:exe:${os.detected.classifier}</pluginArtifact>
+                    <!--默认值，proto源文件路径-->
+                    <protoSourceRoot>src/main/proto</protoSourceRoot>
+                    <!--默认值，proto目标java路径-->
+                    <outputDirectory>src/main/java</outputDirectory>
+                    <!--设置是否生成java文件之前清空outputDirectory的文件，默认值为true，设置为false时也会覆盖同名文件-->
+                    <clearOutputDirectory>false</clearOutputDirectory>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>compile</goal>
+                            <goal>compile-custom</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+<!--            <plugin>-->
+<!--                <groupId>org.apache.maven.plugins</groupId>-->
+<!--                <artifactId>maven-compiler-plugin</artifactId>-->
+<!--                <configuration>-->
+<!--                    <source>6</source>-->
+<!--                    <target>6</target>-->
+<!--                </configuration>-->
+<!--            </plugin>-->
+
+        </plugins>
+    </build>
 </project>
