@@ -17,9 +17,11 @@ public class HelloWorldClient {
     private static final Logger logger = Logger.getLogger(HelloWorldClient.class.getName());
 
     public HelloWorldClient(String host, int port) {
+        //  1.拿到通信channel
         channel = ManagedChannelBuilder.forAddress(host,port)
                 .usePlaintext()
                 .build();
+        //  2.拿到通信对象
         blockingStub = GreeterGrpc.newBlockingStub(channel);
     }
 
@@ -31,11 +33,13 @@ public class HelloWorldClient {
         HelloWorldProto.HelloRequest request = HelloWorldProto.HelloRequest.newBuilder().setName(name).build();
         HelloWorldProto.HelloReply response;
         try{
+            //  3.请求
             response = blockingStub.sayHello(request);
         }catch (StatusRuntimeException e){
             logger.log(Level.WARNING,"RPC failed:{0}", e.getStatus());
             return;
         }
+        // 4. 输出结果
         logger.info("Message from gRPC-Server" + response.getMessage());
     }
 
@@ -48,6 +52,7 @@ public class HelloWorldClient {
             }
             client.greet(user);
         }finally {
+            //  5.关闭channel，释放资源
             client.shutdown();
         }
     }
